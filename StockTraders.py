@@ -36,6 +36,16 @@ def get_highest_price(ticker):
 
 # Chọn sàn giao dịch
 exchange = st.selectbox("Choose Exchange", options=["HSX", "HNX", "UPCOM"])
+
+# Xác định nếu sàn giao dịch đã thay đổi, cần phải làm mới bảng dữ liệu
+if 'current_exchange' not in st.session_state:
+    st.session_state.current_exchange = exchange
+
+if st.session_state.current_exchange != exchange:
+    st.session_state.current_exchange = exchange
+    st.session_state.table_data = pd.DataFrame(columns=['Ticker', 'Recommend Price', 'Highest Price', 'Profit'])
+
+# Lấy dữ liệu chứng khoán cho sàn giao dịch hiện tại
 companies = get_all_companies(exchange)
 
 # Hiển thị các mã chứng khoán
